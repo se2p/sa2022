@@ -1185,7 +1185,7 @@ get_statements(ast)
     Statement node: Return
 
 
-A statement tree (ST-tree) rooted by the statement node s ∈ S is the tree consisting of node s and all of
+A statement tree (ST-tree) rooted by the statement node $s \in S$ is the tree consisting of node s and all of
 its descendants, but excluding any statements nodes. For example, for a method call statement, all child nodes are in the statement tree, since none of the children are statements. On the other hand, an if-statement consists of an expression as well as the conditionally executed statements:
 
 
@@ -1662,7 +1662,7 @@ The authors of ASTNN have developed a batch processing algorithm that allows to 
 
 The algorithm batches $L$ samples of statement trees and then breadthfirst traverses them starting from the root nodes. For the current nodes $ns$ in the same position of the batch, the algorithm first calculates $v_n$ in batch, and then group all their children nodes by the node positions. That is, it groups all nodes at the same depth in the statement trees at the same position, such that the calculation of these nodes can be performed in parallel. Based on the grouping, the algorithm recursively performs batch processing on all children nodes. After getting the results of all children nodes, $h$ can be computed in batch, and all node vectors of calculated statement trees are recorded.
 
-![Children Batching](figures/5_astnn_children_batching.png)
+![Children Batching](../figures/5_astnn_children_batching.png)
 
 Children batching
 
@@ -1852,13 +1852,11 @@ class AstnnCloneDetection(AstnnCloneDetection):
 - $T$ statements of a code snippet given in $x$
 - each statement is encoded using the `BatchTreeEncoder` and placed on the `result_stack`
 - Gated Recurrent Unit (GRU) in both directions over encoded statements $e_i$ to learn about relation to statements before and after in the code
-$$
-  \begin{align}
-  	\overrightarrow{h_t} &= \overrightarrow{\text{GRU}}(e_t) \\
-  	\overleftarrow{h_t} &= \overleftarrow{\text{GRU}}(e_t) \\
-  	h_t &:= \left[ \overleftarrow{h_t}, \overrightarrow{h_t} \right]
-  \end{align}
-$$
+
+    - $\overrightarrow{h_t} = \overrightarrow{\text{GRU}}(e_t)$
+    - $\overleftarrow{h_t} = \overleftarrow{\text{GRU}}(e_t)$
+    - $h_t := \overleftarrow{h_t}, \overrightarrow{h_t}$
+
 - reduce vectors to most important features by max pooling
 
 
@@ -1941,7 +1939,7 @@ def load_model() -> AstnnCloneDetection:
 model = load_model()
 ```
 
-    2022-05-11 13:21:03.529204: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+    2022-05-11 14:09:41.310982: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
     To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
 
 
