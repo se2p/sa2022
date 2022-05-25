@@ -162,13 +162,13 @@ class CFGBuilder:
         self.graph.add_node(self.end)
         
         # set entry as current target
-        self.fringe = [ self.start ]
+        self.frontier = [ self.start ]
         
         for node in method_declaration.body:
             self.add_node(node)
             
         # Add edges from last nodes to end node
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, self.end)
 
     def create_graph(self):
@@ -200,9 +200,9 @@ class CFGBuilder(CFGBuilder):
     def add_node(self, node):
         cfg_node = CFGNode(node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [ cfg_node ]
+        self.frontier = [ cfg_node ]
 ```
 
 
@@ -257,9 +257,9 @@ class CFGBuilder(CFGBuilder):
     def add_statement_node(self, node):
         cfg_node = CFGNode(node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [ cfg_node ]           
+        self.frontier = [ cfg_node ]           
 
     def add_node(self, node):
         if type(node) == javalang.tree.StatementExpression or type(node) == javalang.tree.LocalVariableDeclaration:
@@ -304,9 +304,9 @@ class CFGBuilder(CFGBuilder):
     def add_statement_node(self, node: javalang.tree.StatementExpression):
         cfg_node = CFGNode(node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [ cfg_node ]
+        self.frontier = [ cfg_node ]
         
     @add_node.register
     def add_declaration_node(self, node: javalang.tree.LocalVariableDeclaration):
@@ -372,18 +372,18 @@ class CFGBuilder(CFGBuilder):
         cfg_node = CFGNode(if_node)
         self.graph.add_node(cfg_node)
 
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [cfg_node]
+        self.frontier = [cfg_node]
         self.add_node(if_node.then_statement)
         
         if if_node.else_statement:
-            current_fringe = self.fringe[:]
-            self.fringe = [cfg_node]
+            current_frontier = self.frontier[:]
+            self.frontier = [cfg_node]
             self.add_node(if_node.else_statement)
-            self.fringe.extend(current_fringe)
+            self.frontier.extend(current_frontier)
         else:
-            self.fringe.append(cfg_node)
+            self.frontier.append(cfg_node)
 
 ```
 
@@ -457,13 +457,13 @@ class CFGBuilder(CFGBuilder):
     def add_while_node(self, while_node: javalang.tree.WhileStatement):
         cfg_node = CFGNode(while_node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [cfg_node]
+        self.frontier = [cfg_node]
         self.add_node(while_node.body)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [cfg_node]
+        self.frontier = [cfg_node]
 ```
 
 
@@ -505,17 +505,17 @@ class CFGBuilder(CFGBuilder):
     @add_node.register
     def add_do_node(self, do_node:javalang.tree.DoStatement):
 
-        top = self.fringe[0]
+        top = self.frontier[0]
         self.add_node(do_node.body)
         
         cfg_node = CFGNode(do_node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
         
         head = list(self.graph.successors(top))[0]
         self.graph.add_edge(cfg_node, head)
-        self.fringe = [cfg_node]
+        self.frontier = [cfg_node]
 ```
 
 
@@ -556,13 +556,13 @@ class CFGBuilder(CFGBuilder):
     def add_for_node(self, for_node: javalang.tree.ForStatement):
         cfg_node = CFGNode(for_node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = [ cfg_node ]
+        self.frontier = [ cfg_node ]
         self.add_node(for_node.body)
-        for loop_end in self.fringe:
+        for loop_end in self.frontier:
             self.graph.add_edge(loop_end, cfg_node)
-        self.fringe = [ cfg_node ]   
+        self.frontier = [ cfg_node ]   
 ```
 
 
@@ -607,10 +607,10 @@ class CFGBuilder(CFGBuilder):
     def add_return_node(self, return_node: javalang.tree.ReturnStatement):
         cfg_node = CFGNode(return_node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
         self.graph.add_edge(cfg_node, self.end)
-        self.fringe = []
+        self.frontier = []
 ```
 
 
@@ -655,20 +655,20 @@ class CFGBuilder(CFGBuilder):
     def add_switch_node(self, switch_node: javalang.tree.SwitchStatement):
         cfg_node = CFGNode(switch_node)
         self.graph.add_node(cfg_node)
-        for parent in self.fringe:
+        for parent in self.frontier:
             self.graph.add_edge(parent, cfg_node)
-        self.fringe = []
+        self.frontier = []
         break_cases = []
         for case in switch_node.cases:
-            self.fringe.append(cfg_node)
+            self.frontier.append(cfg_node)
             for statement in case.statements:
                 self.add_node(statement)
             if isinstance(case.statements[-1], javalang.tree.BreakStatement):
                 # If last statement is a break, add edge to the end
-                break_cases.extend(self.fringe)
-                self.fringe = []
-        self.fringe.append(cfg_node)
-        self.fringe.extend(break_cases)
+                break_cases.extend(self.frontier)
+                self.frontier = []
+        self.frontier.append(cfg_node)
+        self.frontier.extend(break_cases)
 ```
 
 
