@@ -4,7 +4,7 @@ In this chapter, we learn about the concept of defect prediction. The basic idea
 
 ###  Defect Prediction
 
-![Defect Prediction Overview](figures/General-framework-of-Just-in-Time-JIT-defect-prediction.jpg)
+![Defect Prediction Overview](../figures/General-framework-of-Just-in-Time-JIT-defect-prediction.jpg)
 
 figure taken from Fan, Xia, Costa, Lo, Hassan, Li \
 The Impact of Mislabeled Changes by SZZ on Just-in-Time Defect Prediction \
@@ -20,7 +20,7 @@ Defect prediction is done on different levels of abstraction.
 
 ### Metrics
 
-![Defect Prediction Overview](figures/framework_defect_prediction_metrics.png)
+![Defect Prediction Overview](../figures/framework_defect_prediction_metrics.png)
 
 #### Types
 
@@ -95,11 +95,11 @@ Modern deep learning approaches do not require manual feature engineering at all
 
 ### Training Data
 
-![Defect Prediction Overview](figures/framework_defect_prediction_within_cross.png)
+![Defect Prediction Overview](../figures/framework_defect_prediction_within_cross.png)
 
 #### Within- vs. Cross-Project Defect Prediction
 
-![Within- vs. Cross-Project Defect Prediction](figures/Within-project-and-cross-project-defect-prediction-scenario-Nam-etal-2017.png)
+![Within- vs. Cross-Project Defect Prediction](../figures/Within-project-and-cross-project-defect-prediction-scenario-Nam-etal-2017.png)
 
 figure taken from \
 Marjuni, Adji, Ferdiana \
@@ -110,9 +110,9 @@ https://www.researchgate.net/figure/Within-project-and-cross-project-defect-pred
 
 #### SZZ
 
-![Defect Prediction Overview](figures/framework_defect_prediction_szz.png)
+![Defect Prediction Overview](../figures/framework_defect_prediction_szz.png)
 
-![SZZ Algorithm](figures/szz.ppm)
+![SZZ Algorithm](../figures/szz.ppm)
 
 figure taken from
 Borg, Svensson, Berg, Hansson  
@@ -525,7 +525,7 @@ Here, we use within-project defect prediction (with `train` and `test` dataset b
 
 ### Model
 
-![Defect Prediction Overview](figures/framework_defect_prediction_model.png)
+![Defect Prediction Overview](../figures/framework_defect_prediction_model.png)
 
 #### Examples
 
@@ -657,7 +657,7 @@ plt.title('Receiver Operating Characteristic')
     
 
 
-![Performance of different defect prediction algorithms](figures/table8_how_far_are_we.png)
+![Performance of different defect prediction algorithms](../figures/table8_how_far_are_we.png)
 
 
 ```python
