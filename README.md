@@ -44,7 +44,7 @@ constructs the tokens are used in, by looking at the abstract syntax tree.
 This chapter looks at how we can automatically generate parsers using Antlr,
 and then use these to translate programs and to create abstract syntax
 trees. We use the Abstract Syntax Trees to do some basic linting, and also 
-consider ode2vec, an alternative approach to creating code embeddings from a 
+consider code2vec, an alternative approach to creating code embeddings from a 
 syntax tree. Neural program analysis requires large quantities of labelled
 code samples, and so we also have a brief look at how to mine such data from
 GitHub repositories.
@@ -120,3 +120,34 @@ programs such that we can create execution traces: (1) Modifying ASTs, and
 approaches we implement a range of different example dynamic analyses.
 
 [Markdown Export](rendered/10%20Dynamic%20Analysis.md)
+
+### 11: (Dynamic) Symbolic Execution
+
+Symbolic execution represents execution paths as symbolic constraints over
+input variables. This can be used to generate test inputs that cover
+specific paths, or it can be used to check assertions and other properties
+of a program. Although recent progress on constraint solvers (SMT solvers in
+particular) has greatly improved the applicability of symbolic execution,
+there are fundamental limitations such as having to deal with loops, or
+black box function calls, which can, however, be overcome dynamically. The
+combination of dynamic and symbolic execution is known as dynamic symbolic
+execution, or concolic execution (concrete+symbolic). This chapter is an exerpt 
+of Andreas Zeller's excellent [Fuzzing Book](https://www.fuzzingbook.org/html/ConcolicFuzzer.html)
+
+[Markdown Export](rendered/11%20Symbolic%20Execution.md)
+
+
+### 12: Defect Prediction
+
+In chapter 4 we briefly looked at how to mine source code repositories (e.g.
+Github), and we also looked at the SZZ algorithm. In this chapter we take
+another look at what the SZZ algorithm is often used for: Commits labelled
+as buggy/non-buggy allow us to train predictive models that can indicate
+whether a new commit is likely to be buggy or not. We build a simple
+logistic regression model using only few features that matches the state of
+the art, but we also discover that common metrics hide some issues in defect
+prediction that yet need to be solved (mainly, we need better training
+data).
+
+[Markdown Export](rendered/12%20Defect%20Prediction.md)
+
